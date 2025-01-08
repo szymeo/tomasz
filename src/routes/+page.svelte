@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AnimatedLayer from '$lib/AnimatedLayer.svelte';
 	import { Sprite, Stage, Text } from 'glixy';
+	import { fly } from 'svelte/transition';
 
 	let width = $state(0);
 	let height = $state(0);
@@ -16,11 +17,13 @@
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} />
 
 <div
-	class="fixed left-10 top-10 w-72 rounded-3xl border-r border-t border-white/10 bg-white/20 p-3 text-white backdrop-blur-lg"
+	class="fixed bottom-3 left-3 right-3 h-auto w-11/12 overflow-auto rounded-3xl border-r border-t border-white/10 bg-white/20 p-3 text-white backdrop-blur-lg sm:bottom-10 sm:left-10 sm:top-10 sm:w-72"
 >
-	<h1 class="mb-3 p-4 text-center font-mono text-2xl font-bold">Wallpapers, yay!</h1>
+	<h1 class="sticky left-0 mb-3 p-4 text-left font-mono text-2xl font-bold sm:text-center">
+		Wallpapers, yay!
+	</h1>
 
-	<div class="flex flex-col gap-3">
+	<div class="flex gap-3 sm:flex-col">
 		{#each wallpapers as wallpaper}
 			<img
 				onmouseenter={() => (previewedWallpaper = wallpaper)}
@@ -29,7 +32,7 @@
 						previewedWallpaper = null;
 					}
 				}}
-				class="aspect-video h-auto w-full rounded-2xl object-cover"
+				class="aspect-video h-full w-auto max-w-44 rounded-2xl object-cover sm:h-auto sm:w-full sm:max-w-full"
 				alt={wallpaper}
 				src={wallpaper}
 				width={100}
@@ -56,23 +59,13 @@
 		</AnimatedLayer>
 	{/each}
 
-	<AnimatedLayer visible={!previewedWallpaper} transition={{ duration: 25 }}>
-		{#snippet children(opacity: number)}
-			<Text
-				text="Hover over a wallpaper to preview it!"
-				style={{
-					color: 0xffffff,
-					font: 'Arial',
-					size: 54,
-					style: 'normal',
-					weight: 'bold'
-				}}
-				anchor={{ x: 0.5, y: 0.5 }}
-				width={200}
-				x={width / 2}
-				y={height / 2}
-				{opacity}
-			/>
-		{/snippet}
-	</AnimatedLayer>
+	{#if !previewedWallpaper}
+		<h1
+			in:fly={{ y: 5, duration: 250 }}
+			out:fly={{ y: -5, duration: 250 }}
+			class="fixed left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 text-center font-mono text-4xl font-bold text-white sm:left-2/3 sm:top-1/2"
+		>
+			Hover over a wallpaper to preview it!
+		</h1>
+	{/if}
 </Stage>

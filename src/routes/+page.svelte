@@ -61,8 +61,7 @@
 
 	{#if !previewedWallpaper}
 		<h1
-			in:fly={{ y: 5, duration: 250 }}
-			out:fly={{ y: -5, duration: 250 }}
+			in:fly={{ y: 5, duration: 150 }}
 			class="fixed left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 text-center font-mono text-4xl font-bold text-white sm:left-2/3 sm:top-1/2"
 		>
 			Hover over a wallpaper to preview it!
